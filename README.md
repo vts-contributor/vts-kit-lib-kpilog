@@ -3,8 +3,8 @@ Logging Library for Spring Boot
 This library provides utilities that make it easy to add logging into spring boot project
 
 <b>Feature List</b>:
-* [Application Logging](#Application Logging)
-* [Kpi Logging](#Kpi Logging)
+* [Application Logging](#Application-Logging)
+* [Kpi Logging](#Kpi-Logging)
 
 <b>The built-in configuration</b>:
 * Pattern:
