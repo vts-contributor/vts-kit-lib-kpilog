@@ -7,9 +7,10 @@ This library provides utilities that make it easy to add logging into spring boo
 * [Kpi Logging](#Kpi Logging)
 
 <b>The built-in configuration</b>:
-* Message Pattern:
-    * Application Log Pattern: `%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5p %c{1}:%L - %m%n`
-    * KPI Log Pattern: `%d{yyyy-MM-dd@HH:mm:ss}[%c{1}:%L]:%m%n`
+* Pattern:
+    * Application Log Message Pattern: `%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5p %c{1}:%L - %m%n`
+    * KPI Log Message Pattern: `%d{yyyy-MM-dd@HH:mm:ss}[%c{1}:%L]:%m%n`
+    * Archived File Name Pattern: `archived-*.zip`
 * File Rolling Policy:
     * Max History: `3`
     * Max File Size: `10MB`
@@ -25,7 +26,7 @@ Quick start
 </dependency>
 ```
 
-* Add `<include resource="vtskit-default-logback.xml"/>` line to your `logback.xml` file. Example:
+* Add line `<include resource="vtskit-default-logback.xml"/>` to your `logback.xml` file. Example:
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
@@ -39,8 +40,8 @@ vtskit:
   logs:
     level: INFO # Optional. Default is INFO
     kpi-logs:
-      application-code: DEMO-APPLICATION # Optional. Default ApplicationCode value
-      service-code: ${spring.application.name} # Optional. Default ServiceCode value
+      application-code: DEMO-APPLICATION # Default ApplicationCode value
+      service-code: ${spring.application.name} # Default ServiceCode value
 ```
 
 Usage
@@ -127,6 +128,8 @@ vtskit:
         username: root
         password: root
 ```
+The system will automatically create a table named `KPI_LOG` and save the kpi log data there.
+
 
 Build
 -------
