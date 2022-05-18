@@ -6,22 +6,23 @@ import com.zaxxer.hikari.HikariDataSource;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class MariaDbDatasource {
     private HikariConfig config = new HikariConfig();
     private HikariDataSource ds;
 
-    private static MariaDbDatasource instance;
+    private static AtomicReference<MariaDbDatasource> instance = new AtomicReference<>();
 
     public static MariaDbDatasource getInstance(KpiDatasourceProperties properties) {
-        if (instance == null) {
+        if (instance.get() == null) {
             synchronized (MariaDbDatasource.class) {
-                if (instance == null) {
-                    instance = new MariaDbDatasource(properties);
+                if (instance.get() == null) {
+                    instance.set(new MariaDbDatasource(properties));
                 }
             }
         }
-        return instance;
+        return instance.get();
     }
 
     private MariaDbDatasource(KpiDatasourceProperties properties) {

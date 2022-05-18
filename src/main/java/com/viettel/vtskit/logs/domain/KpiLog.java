@@ -201,8 +201,8 @@ public class KpiLog {
         private String ipPortCurrentNode;
         private String requestContent;
         private String responseContent;
-        private Date startTime;
-        private Date endTime;
+        private java.util.Date startTime;
+        private java.util.Date endTime;
         private String errorCode;
         private String errorDescription;
         private TransactionStatus transactionStatus;
@@ -245,12 +245,12 @@ public class KpiLog {
             return this;
         }
 
-        public KpiLog.Builder startTime(Date startTime) {
+        public KpiLog.Builder startTime(java.util.Date startTime) {
             this.startTime = startTime;
             return this;
         }
 
-        public KpiLog.Builder endTime(Date endTime) {
+        public KpiLog.Builder endTime(java.util.Date endTime) {
             this.endTime = endTime;
             return this;
         }
@@ -296,7 +296,7 @@ public class KpiLog {
             }
             return new KpiLog(applicationCode, serviceCode, sessionId, ipPortParentNode,
                     ipPortCurrentNode, requestContent, responseContent,
-                    startTime, endTime, duration, errorCode, errorDescription, transactionStatusVal,
+                    new Date(startTime.getTime()), new Date(endTime.getTime()), duration, errorCode, errorDescription, transactionStatusVal,
                     actionName, username, account);
         }
     }
