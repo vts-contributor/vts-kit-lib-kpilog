@@ -113,7 +113,7 @@ public class KpiLogService {
         if(StringUtils.isNullOrEmpty(kpiLog.getServiceCode())){
             kpiLog.setServiceCode(kpiLogProperties.getServiceCode());
         }
-        logger.info(KPI_LOG_MARKER, kpiLog.toString());
+        logger.info(KPI_LOG_MARKER, "{0}", kpiLog.toString());
         insertKpiLogToDb(kpiLog);
     }
 

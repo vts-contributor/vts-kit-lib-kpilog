@@ -5,6 +5,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class DateUtils {
+
+    private DateUtils(){}
+
     public static String formatDate(Date date){
         if(date == null){
             return null;

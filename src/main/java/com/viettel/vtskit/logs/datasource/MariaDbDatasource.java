@@ -11,7 +11,7 @@ public class MariaDbDatasource {
     private HikariConfig config = new HikariConfig();
     private HikariDataSource ds;
 
-    private static volatile MariaDbDatasource instance;
+    private static MariaDbDatasource instance;
 
     public static MariaDbDatasource getInstance(KpiDatasourceProperties properties) {
         if (instance == null) {

@@ -12,7 +12,10 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class SqlUtils {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(SqlUtils.class);
+
+    private SqlUtils(){}
 
     public static void closeQuiet(AutoCloseable closeable) {
         if(closeable == null){

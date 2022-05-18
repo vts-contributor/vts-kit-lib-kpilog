@@ -290,15 +290,14 @@ public class KpiLog {
             if (startTime != null && endTime != null) {
                 duration = endTime.getTime() - startTime.getTime();
             }
-            Integer transactionStatus = null;
+            Integer transactionStatusVal = null;
             if (this.transactionStatus != null) {
-                transactionStatus = this.transactionStatus.getValue();
+                transactionStatusVal = this.transactionStatus.getValue();
             }
-            KpiLog kpiLog = new KpiLog(applicationCode, serviceCode, sessionId, ipPortParentNode,
+            return new KpiLog(applicationCode, serviceCode, sessionId, ipPortParentNode,
                     ipPortCurrentNode, requestContent, responseContent,
-                    startTime, endTime, duration, errorCode, errorDescription, transactionStatus,
+                    startTime, endTime, duration, errorCode, errorDescription, transactionStatusVal,
                     actionName, username, account);
-            return kpiLog;
         }
     }
 }
