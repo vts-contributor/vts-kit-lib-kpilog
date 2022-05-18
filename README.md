@@ -7,7 +7,7 @@ This library provides utilities that make it easy to add logging into spring boo
 * [Kpi Logging](#Kpi-Logging)
 
 <b>Output type supported</b>
-* Console
+* Console (Default)
 * File
 * MariaDB (Use for KPI log)
 
