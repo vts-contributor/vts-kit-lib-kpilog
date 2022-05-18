@@ -46,7 +46,7 @@ vtskit:
 
 Usage
 -------
-##### Application Logging
+## Application Logging
 By default, application log will be logged to the console log.
 
 Example code to write application log:
@@ -76,7 +76,7 @@ vtskit:
       console-log-file-name: ${spring.application.name}.log # File to save all log
 ```
 
-##### Kpi Logging
+## Kpi Logging
 Define `KpiLogService` instance:
 ```java
 private KpiLogService kpiLogService;
