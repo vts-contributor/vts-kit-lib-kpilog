@@ -2,11 +2,16 @@ Logging Library for Spring Boot
 -------
 This library provides utilities that make it easy to add logging into spring boot project
 
-<b>Feature List</b>:
+<b>Feature List</b>
 * [Application Logging](#Application-Logging)
 * [Kpi Logging](#Kpi-Logging)
 
-<b>The built-in configuration</b>:
+<b>Output type supported</b>
+* Console
+* File
+* MariaDB (Use for KPI log)
+
+<b>The built-in configuration</b>
 * Pattern:
     * Application Log Message Pattern: `%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5p %c{1}:%L - %m%n`
     * KPI Log Message Pattern: `%d{yyyy-MM-dd@HH:mm:ss}[%c{1}:%L]:%m%n`
