@@ -5,11 +5,14 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class DateUtils {
+
+    private DateUtils(){}
+
     public static String formatDate(Date date){
         if(date == null){
             return null;
         }
-        String pattern = "yyyy-MM-dd@HH:mm:ss";
+        String pattern = "yyyy-MM-dd HH:mm:ss.SSS";
         DateFormat df = new SimpleDateFormat(pattern);
         return df.format(date);
     }
