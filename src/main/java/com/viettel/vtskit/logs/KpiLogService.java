@@ -129,7 +129,7 @@ public class KpiLogService {
             kpiLog.setServiceCode(kpiLogProperties.getServiceCode());
         }
         CommonUtils.addCodeLineNumber();
-        logger.info(KPI_LOG_MARKER, "{}", kpiLog.toString());
+        logger.info(KPI_LOG_MARKER, "{}", kpiLog);
         insertKpiLogToDb(kpiLog);
     }
 

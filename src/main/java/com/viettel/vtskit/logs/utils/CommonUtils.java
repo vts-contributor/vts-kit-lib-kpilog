@@ -4,6 +4,8 @@ import org.slf4j.MDC;
 
 public class CommonUtils {
 
+    private CommonUtils(){}
+
     /**
      * Lay thu tu dong code vi tri dang goi ghi log.
      * Xu ly truong hop log4j lay khong dung line number neu goi qua lop wrapper @{@link com.viettel.vtskit.logs.AppLogService} va @{@link com.viettel.vtskit.logs.KpiLogService}
