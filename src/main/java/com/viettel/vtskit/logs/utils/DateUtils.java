@@ -12,7 +12,7 @@ public class DateUtils {
         if(date == null){
             return null;
         }
-        String pattern = "yyyy-MM-dd@HH:mm:ss";
+        String pattern = "yyyy-MM-dd HH:mm:ss.SSS";
         DateFormat df = new SimpleDateFormat(pattern);
         return df.format(date);
     }
