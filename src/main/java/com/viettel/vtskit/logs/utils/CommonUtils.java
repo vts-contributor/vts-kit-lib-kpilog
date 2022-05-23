@@ -66,5 +66,4 @@ public class CommonUtils {
     public static Date getDateRequestAttr(HttpServletRequest request, String key){
         return (Date) request.getAttribute(key);
     }
-
 }

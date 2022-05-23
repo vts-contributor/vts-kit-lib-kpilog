@@ -12,10 +12,12 @@ import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.task.TaskExecutor;
+import org.springframework.lang.NonNull;
 
 import javax.annotation.PostConstruct;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 
 public class KpiLogService {
     private static final Marker KPI_LOG_MARKER = MarkerFactory.getMarker("KPI_LOG");
@@ -67,15 +69,15 @@ public class KpiLogService {
         createKpiLogTable();
     }
 
+    private boolean isUsingMariaDB(){
+        return datasourceProperties != null && datasourceProperties.isUseMariaDB();
+    }
+
     private void createKpiLogTable(){
         if(!isUsingMariaDB()){
             return;
         }
         SqlUtils.runQuery(datasourceProperties, CREATE_KPI_LOG_TABLE_QUERY, null);
-    }
-
-    private boolean isUsingMariaDB(){
-        return datasourceProperties != null && datasourceProperties.isUseMariaDB();
     }
 
     private void insertKpiLogToDb(final KpiLog kpiLog){
@@ -89,8 +91,16 @@ public class KpiLogService {
                 statement.setString(5, kpiLog.getIpPortCurrentNode());
                 statement.setString(6, kpiLog.getRequestContent());
                 statement.setString(7, kpiLog.getResponseContent());
-                statement.setDate(8, kpiLog.getStartTime());
-                statement.setDate(9, kpiLog.getEndTime());
+                if(kpiLog.getStartTime() == null){
+                    statement.setNull(8, java.sql.Types.NULL);
+                }else{
+                    statement.setTimestamp(8, new Timestamp(kpiLog.getStartTime().getTime()));
+                }
+                if(kpiLog.getEndTime() == null){
+                    statement.setNull(9, java.sql.Types.NULL);
+                }else{
+                    statement.setTimestamp(9, new Timestamp(kpiLog.getEndTime().getTime()));
+                }
                 if(kpiLog.getDuration() == null){
                     statement.setNull(10, java.sql.Types.NULL);
                 }else{
@@ -110,7 +120,7 @@ public class KpiLogService {
         });
     }
 
-    public void writeLog(Logger logger, KpiLog kpiLog){
+    public void writeLog(@NonNull Logger logger, KpiLog kpiLog){
         if(StringUtils.isNullOrEmpty(kpiLog.getApplicationCode())){
             kpiLog.setApplicationCode(kpiLogProperties.getApplicationCode());
         }

@@ -1,8 +1,10 @@
 package com.viettel.vtskit.logs;
 
+import com.viettel.vtskit.logs.utils.CommonUtils;
 import org.slf4j.Logger;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
+import org.springframework.lang.NonNull;
 
 public class AppLogService {
     private static final Marker ERROR_LOG_MARKER = MarkerFactory.getMarker("ERROR_LOG");
@@ -11,52 +13,38 @@ public class AppLogService {
         // Disable New Instance
     }
 
-    public static void info(Logger logger, String message){
-        if(logger == null){
-            return;
-        }
+    public static void info(@NonNull Logger logger, String message){
+        CommonUtils.addCodeLineNumber();
         logger.info(message);
     }
 
-    public static void info(Logger logger, String message, Object... arguments){
-        if(logger == null){
-            return;
-        }
+    public static void info(@NonNull Logger logger, String message, Object... arguments){
+        CommonUtils.addCodeLineNumber();
         logger.info(message, arguments);
     }
 
-    public static void error(Logger logger, String message, Object... arguments){
-        if(logger == null){
-            return;
-        }
+    public static void error(@NonNull Logger logger, String message, Object... arguments){
+        CommonUtils.addCodeLineNumber();
         logger.error(ERROR_LOG_MARKER, message, arguments);
     }
 
-    public static void error(Logger logger, Throwable throwable){
-        if(logger == null){
-            return;
-        }
+    public static void error(@NonNull Logger logger, Throwable throwable){
+        CommonUtils.addCodeLineNumber();
         logger.error(ERROR_LOG_MARKER, throwable.getMessage(), throwable);
     }
 
-    public static void debug(Logger logger, String message, Object... arguments){
-        if(logger == null){
-            return;
-        }
+    public static void debug(@NonNull Logger logger, String message, Object... arguments){
+        CommonUtils.addCodeLineNumber();
         logger.debug(message, arguments);
     }
 
-    public static void trace(Logger logger, String message, Object... arguments){
-        if(logger == null){
-            return;
-        }
+    public static void trace(@NonNull Logger logger, String message, Object... arguments){
+        CommonUtils.addCodeLineNumber();
         logger.trace(message, arguments);
     }
 
-    public static void warn(Logger logger, String message, Object... arguments){
-        if(logger == null){
-            return;
-        }
+    public static void warn(@NonNull Logger logger, String message, Object... arguments){
+        CommonUtils.addCodeLineNumber();
         logger.warn(message, arguments);
     }
 }
