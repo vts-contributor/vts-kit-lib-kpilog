@@ -1,0 +1,14 @@
+package com.viettel.vtskit.logs.enums;
+
+public interface KpiLogAttrKeys {
+    String STAR_TIME = "KPI_STAR_TIME";
+    String REQUEST_CONTENT = "KPI_REQUEST_CONTENT";
+    String RESPONSE_CONTENT = "KPI_RESPONSE_CONTENT";
+    String ERROR_CODE = "KPI_ERROR_CODE";
+    String ERROR_DESCRIPTION = "KPI_ERROR_DESCRIPTION";
+    String TRANSACTION_STATUS = "KPI_TRANSACTION_STATUS";
+    String USERNAME = "KPI_USERNAME";
+    String ACCOUNT = "KPI_ACCOUNT";
+    String SESSION_ID = "KPI_SESSION_ID";
+    String PARENT_NODE = "KPI_PARENT_NODE";
+}
