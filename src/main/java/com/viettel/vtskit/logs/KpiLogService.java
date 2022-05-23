@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.lang.NonNull;
 
 import javax.annotation.PostConstruct;
@@ -60,6 +61,7 @@ public class KpiLogService {
 
     private KpiLogProperties kpiLogProperties;
     private KpiDatasourceProperties datasourceProperties;
+    private TaskExecutor taskExecutor;
 
     @PostConstruct
     private void init(){
@@ -79,9 +81,6 @@ public class KpiLogService {
     }
 
     private void insertKpiLogToDb(final KpiLog kpiLog){
-        if(!isUsingMariaDB()){
-            return;
-        }
         SqlUtils.runQuery(datasourceProperties, INSERT_KPI_LOG_QUERY, new QueryCallback() {
             @Override
             public void bindParameters(PreparedStatement statement) throws SQLException {
@@ -130,11 +129,18 @@ public class KpiLogService {
         }
         CommonUtils.addCodeLineNumber();
         logger.info(KPI_LOG_MARKER, "{}", kpiLog);
-        insertKpiLogToDb(kpiLog);
+        if(isUsingMariaDB()){
+            taskExecutor.execute(() -> insertKpiLogToDb(kpiLog));
+        }
     }
 
     @Autowired
     public void setKpiLogProperties(KpiLogProperties kpiLogProperties) {
         this.kpiLogProperties = kpiLogProperties;
+    }
+
+    @Autowired
+    public void setTaskExecutor(TaskExecutor taskExecutor) {
+        this.taskExecutor = taskExecutor;
     }
 }

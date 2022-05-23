@@ -13,6 +13,9 @@ public class KpiLogProperties {
     @Value("${service-code:}")
     private String serviceCode;
 
+    @Value("${allow-url-patterns:/**}")
+    private String allowUrlPatterns;
+
     @Value("${kpi-log-file-name:}")
     private String kpiLogFileName;
 
@@ -49,5 +52,13 @@ public class KpiLogProperties {
 
     public void setServiceCode(String serviceCode) {
         this.serviceCode = serviceCode;
+    }
+
+    public String getAllowUrlPatterns() {
+        return allowUrlPatterns;
+    }
+
+    public void setAllowUrlPatterns(String allowUrlPatterns) {
+        this.allowUrlPatterns = allowUrlPatterns;
     }
 }

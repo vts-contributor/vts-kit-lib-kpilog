@@ -14,7 +14,7 @@ This library provides utilities that make it easy to add logging into spring boo
 <b>The built-in configuration</b>
 * Pattern:
     * Application Log Message Pattern: `%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5p %c{1}:%X{line} - %m%n`
-    * KPI Log Message Pattern: `%d{yyyy-MM-dd@HH:mm:ss}[%c{1}:%X{line}] :%m%n`
+    * KPI Log Message Pattern: `ApplicationCode|ServiceCode|SessionId|IpPortParentNode|IpPortCurrentNode|RequestContent|ResponseContent|StartTime|EndTime|Duration|ErrorCode|ErrorDescription|TransactionStatus|ActionName|Username|Account`
     * Archived File Name Pattern: `archived-*.zip`
 * File Rolling Policy:
     * Max History: `3`
@@ -82,7 +82,30 @@ vtskit:
 ```
 
 ### Kpi Logging
-Define `KpiLogService` instance:
+#### Automation
+By default, All requests will be automatically saved kpi log.
+
+To limit by url patterns, add below configuration to `application-*.yml` file:
+```yaml
+vtskit:
+  logs:
+    kpi-logs:
+      allow-url-patterns: /**/getList,/**/update # Default is '/**' allow all requests
+```
+
+To disable automation mode, add below configuration:
+
+```yaml
+vtskit:
+  logs:
+    kpi-logs:
+      allow-url-patterns: ignore
+```
+
+#### Manual
+If you want to handle saving kpi log manually, follow the steps below
+
+<b>Step 1</b>: Define `KpiLogService` instance:
 ```java
 private KpiLogService kpiLogService;
 
@@ -92,7 +115,7 @@ public void setKpiLogService(KpiLogService kpiLogService) {
 }
 ```
 
-Example code to write KPI Log:
+<b>Step 2</b>: Set KPI Log information using `KpiLog.Builder`:
 ```java
 KpiLog.Builder builder = new KpiLog.Builder();
 builder.sessionId("SessionId");
@@ -100,17 +123,22 @@ builder.ipPortParentNode("127.0.0.1");
 builder.ipPortCurrentNode("127.0.0.1");
 builder.requestContent("requestContent");
 builder.responseContent("responseContent");
-builder.startTime(new Date(Calendar.getInstance().getTimeInMillis()));
+builder.startTime(new Date());
 builder.errorCode("00");
 builder.errorDescription("");
 builder.transactionStatus(TransactionStatus.SUCCESS);
 builder.actionName("actionName");
 builder.username("username");
 builder.account("account");
-builder.endTime(new Date(Calendar.getInstance().getTimeInMillis()));
+builder.endTime(new Date());
+```
 
+<b>Step 3</b>: Execute save KPI Log
+```java
 kpiLogService.writeLog(LOGGER, builder.build());
 ```
+
+#### Output configuration
 
 By default, KPI log will be logged to the console log. In addition, it can be configured to write to file or database.
 
@@ -128,29 +156,29 @@ Similarly, to save the kpi log to the database, add below configuration to `appl
 vtskit:
   logs:
     kpi-logs:
-      datasource: # Configuration mariadb for store kpi log
+      datasource: # Configuration Maria DB for store kpi log
         url: jdbc:mariadb://localhost:3307/test-database
         username: root
         password: root
 ```
 The system will automatically create a table named `KPI_LOG` and save the kpi log data there.
 
-
-Build
--------
-* Build with Unittest
-```shell script
-mvn clean install
-```
-
-* Build without Unittest
-```shell script
-mvn clean install -DskipTests
-```
-
 Contribute
 -------
-Please refer [Contributors Guide](CONTRIBUTING.md)
+#### Setting up the development environment
+* <b>IDE:</b> Eclipse, Intellij IDEA
+* <b>JDK:</b> >= JDK 8
+* <b>Maven:</b> >= 3.6.0
+* <b>Build:</b>
+```shell script
+mvn clean install
+# Skip Unittest
+mvn clean install -DskipTests
+```
+#### Contribute Guidelines
+If you have any ideas, just open an issue and tell us what you think.
+
+If you'd like to contribute, please refer [Contributors Guide](CONTRIBUTING.md)
 
 License
 -------

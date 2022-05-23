@@ -2,6 +2,7 @@ package com.viettel.vtskit.logs.domain;
 
 import com.viettel.vtskit.logs.enums.TransactionStatus;
 import com.viettel.vtskit.logs.utils.DateUtils;
+import com.viettel.vtskit.logs.utils.StringUtils;
 
 import java.sql.Date;
 
@@ -176,22 +177,22 @@ public class KpiLog {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(applicationCode).append("|");
-        sb.append(serviceCode).append("|");
-        sb.append(sessionId).append("|");
-        sb.append(ipPortParentNode).append("|");
-        sb.append(ipPortCurrentNode).append("|");
-        sb.append(requestContent).append("|");
-        sb.append(responseContent).append("|");
+        sb.append(StringUtils.safeString(applicationCode)).append("|");
+        sb.append(StringUtils.safeString(serviceCode)).append("|");
+        sb.append(StringUtils.safeString(sessionId)).append("|");
+        sb.append(StringUtils.safeString(ipPortParentNode)).append("|");
+        sb.append(StringUtils.safeString(ipPortCurrentNode)).append("|");
+        sb.append(StringUtils.safeString(requestContent)).append("|");
+        sb.append(StringUtils.safeString(responseContent)).append("|");
         sb.append(DateUtils.formatDate(startTime)).append("|");
         sb.append(DateUtils.formatDate(endTime)).append("|");
-        sb.append(duration).append("|");
-        sb.append(errorCode).append("|");
-        sb.append(errorDescription).append("|");
-        sb.append(transactionStatus).append("|");
-        sb.append(actionName).append("|");
-        sb.append(username).append("|");
-        sb.append(account).append("|");
+        sb.append(duration == null ? "" : duration).append("|");
+        sb.append(StringUtils.safeString(errorCode)).append("|");
+        sb.append(StringUtils.safeString(errorDescription)).append("|");
+        sb.append(transactionStatus == null ? "" : transactionStatus).append("|");
+        sb.append(StringUtils.safeString(actionName)).append("|");
+        sb.append(StringUtils.safeString(username)).append("|");
+        sb.append(StringUtils.safeString(account)).append("|");
         return sb.toString();
     }
 

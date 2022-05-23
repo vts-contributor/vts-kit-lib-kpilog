@@ -18,4 +18,17 @@ public enum TransactionStatus {
     public String toString() {
         return String.valueOf(value);
     }
+
+    public static TransactionStatus resolve(String value){
+        if(value == null){
+            return null;
+        }
+        if(TransactionStatus.SUCCESS.toString().equals(value)){
+            return TransactionStatus.SUCCESS;
+        }else if(TransactionStatus.FAILED.toString().equals(value)){
+            return TransactionStatus.FAILED;
+        }else{
+            return null;
+        }
+    }
 }

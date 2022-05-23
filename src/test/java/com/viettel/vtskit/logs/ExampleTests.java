@@ -1,6 +1,7 @@
 package com.viettel.vtskit.logs;
 
 import org.junit.Test;
+
 import static org.junit.Assert.assertTrue;
 
 public class ExampleTests {
