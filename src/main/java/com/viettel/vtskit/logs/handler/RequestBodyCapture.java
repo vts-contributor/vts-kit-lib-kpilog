@@ -1,7 +1,6 @@
 package com.viettel.vtskit.logs.handler;
 
 import com.viettel.vtskit.logs.enums.KpiLogAttrKeys;
-import com.viettel.vtskit.logs.utils.CommonUtils;
 import com.viettel.vtskit.logs.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;

@@ -130,12 +130,7 @@ public class KpiLogService {
         CommonUtils.addCodeLineNumber();
         logger.info(KPI_LOG_MARKER, "{}", kpiLog);
         if(isUsingMariaDB()){
-            taskExecutor.execute(new Runnable() {
-                @Override
-                public void run() {
-                    insertKpiLogToDb(kpiLog);
-                }
-            });
+            taskExecutor.execute(() -> insertKpiLogToDb(kpiLog));
         }
     }
 
