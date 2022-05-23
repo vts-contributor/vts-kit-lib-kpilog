@@ -27,7 +27,7 @@ Quick start
 <dependency>
     <groupId>com.atviettelsolutions</groupId>
     <artifactId>vts-kit-ms-logs-handler</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
 </dependency>
 ```
 
