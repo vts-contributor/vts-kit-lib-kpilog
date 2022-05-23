@@ -14,7 +14,7 @@ This library provides utilities that make it easy to add logging into spring boo
 <b>The built-in configuration</b>
 * Pattern:
     * Application Log Message Pattern: `%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5p %c{1}:%X{line} - %m%n`
-    * KPI Log Message Pattern: `%d{yyyy-MM-dd@HH:mm:ss}[%c{1}:%X{line}] :%m%n`
+    * KPI Log Message Pattern: `ApplicationCode|ServiceCode|SessionId|IpPortParentNode|IpPortCurrentNode|RequestContent|ResponseContent|StartTime|EndTime|Duration|ErrorCode|ErrorDescription|TransactionStatus|ActionName|Username|Account`
     * Archived File Name Pattern: `archived-*.zip`
 * File Rolling Policy:
     * Max History: `3`

@@ -22,20 +22,26 @@ public class StringUtils {
 
     public static String cvtObjToJsonString(Object object){
         try {
+            if(object == null){
+                return null;
+            }
             return GSON.toJson(object);
         }catch (Exception ex){
             AppLogService.error(LOGGER, ex);
-            return "";
+            return null;
         }
     }
 
-    public static String cvtMapToJsonString(Map map){
+    public static String cvtMapToJsonString(Map<String, ?> map){
         try {
-            Type type = new TypeToken<HashMap>(){}.getType();
+            if(map == null){
+                return null;
+            }
+            Type type = new TypeToken<HashMap<String, ?>>(){}.getType();
             return GSON.toJson(map, type);
         }catch (Exception ex){
             AppLogService.error(LOGGER, ex);
-            return "";
+            return null;
         }
     }
 
