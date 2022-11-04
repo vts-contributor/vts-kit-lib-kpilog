@@ -1,5 +1,6 @@
 package com.viettel.vtskit.logs.configuration;
 
+import com.viettel.vtskit.logs.AppLogService;
 import com.viettel.vtskit.logs.KpiLogService;
 import com.viettel.vtskit.logs.handler.KpiLogInterceptor;
 import com.viettel.vtskit.logs.handler.RequestBodyCapture;

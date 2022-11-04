@@ -53,6 +53,6 @@ public class KpiLogInterceptor implements HandlerInterceptor {
         builder.account(CommonUtils.getStringRequestAttr(request, KpiLogAttrKeys.ACCOUNT));
         builder.actionName(actionName);
         builder.endTime(new Date());
-        kpiLogService.writeLog(LOGGER, builder.build());
+        kpiLogService.writeFileLog(LOGGER, builder.build());
     }
 }

@@ -14,6 +14,80 @@ public class KpiDatasourceProperties {
     @Value("${password:}")
     private String password;
 
+    @Value("${driver-class-name}")
+    private  String driver_class_name;
+
+    @Value("{table-name}")
+    private  String table_name;
+    @Value("${cachePrepStmts}")
+    private String cachePrepStmts;
+
+    @Value("${prepStmtCacheSize}")
+    private String prepStmtCacheSize;
+
+    @Value("${prepStmtCacheSqlLimit}")
+    private String prepStmtCacheSqlLimit;
+
+    @Value("${MaximumPoolSize}")
+    private int MaximumPoolSize;
+
+    @Value("${MinimumPoolSize}")
+    private int MinimumPoolSize;
+
+    public String getTable_name() {
+        return table_name;
+    }
+    public void setTable_name(String table_name) {
+        this.table_name = table_name;
+    }
+
+    public int getMaximumPoolSize() {
+        return MaximumPoolSize;
+    }
+
+    public void setMaximumPoolSize(int maximumPoolSize) {
+        MaximumPoolSize = maximumPoolSize;
+    }
+
+    public int getMinimumPoolSize() {
+        return MinimumPoolSize;
+    }
+
+    public void setMinimumPoolSize(int minimumPoolSize) {
+        MinimumPoolSize = minimumPoolSize;
+    }
+
+    public String getCachePrepStmts() {
+        return cachePrepStmts;
+    }
+
+    public void setCachePrepStmts(String cachePrepStmts) {
+        this.cachePrepStmts = cachePrepStmts;
+    }
+
+    public String getPrepStmtCacheSize() {
+        return prepStmtCacheSize;
+    }
+
+    public void setPrepStmtCacheSize(String prepStmtCacheSize) {
+        this.prepStmtCacheSize = prepStmtCacheSize;
+    }
+
+    public String getPrepStmtCacheSqlLimit() {
+        return prepStmtCacheSqlLimit;
+    }
+
+    public void setPrepStmtCacheSqlLimit(String prepStmtCacheSqlLimit) {
+        this.prepStmtCacheSqlLimit = prepStmtCacheSqlLimit;
+    }
+    public String getDriver_class_name() {
+        return driver_class_name;
+    }
+
+    public void setDriver_class_name(String driver_class_name) {
+        this.driver_class_name = driver_class_name;
+    }
+
     public String getUrl() {
         return url;
     }

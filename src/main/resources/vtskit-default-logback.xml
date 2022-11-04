@@ -5,11 +5,11 @@
     <property name="KPI_MSG_PATTERN" value="%d{yyyy-MM-dd@HH:mm:ss}[%c{1}:%X{line}] :%m%n" />
     <property name="MAX_HISTORY" value="3" />
     <property name="MAX_FILE_SIZE" value="10MB" />
-    <springProperty name="LOG_LEVEL" source="vtskit.logs.level" defaultValue = "INFO"/>
-    <springProperty name="LOG_FOLDER" source="vtskit.logs.log-folder"/>
-    <springProperty name="KPI_LOG_FILE" source="vtskit.logs.kpi-logs.kpi-log-file-name"/>
-    <springProperty name="ERROR_LOG_FILE" source="vtskit.logs.app-logs.error-log-file-name"/>
-    <springProperty name="CONSOLE_LOG_FILE" source="vtskit.logs.app-logs.console-log-file-name"/>
+    <springProperty name="LOG_LEVEL" source="logs.level" defaultValue = "INFO"/>
+    <springProperty name="LOG_FOLDER" source="logs.log-folder"/>
+    <springProperty name="KPI_LOG_FILE" source="logs.kpi-logs.kpi-log-file-name"/>
+    <springProperty name="ERROR_LOG_FILE" source="logs.app-logs.error-log-file-name"/>
+    <springProperty name="CONSOLE_LOG_FILE" source="logs.app-logs.console-log-file-name"/>
 
     <statusListener class="ch.qos.logback.core.status.NopStatusListener" />
 

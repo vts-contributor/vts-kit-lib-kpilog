@@ -29,12 +29,12 @@ public class MariaDbDatasource {
         config.setJdbcUrl(properties.getUrl());
         config.setUsername(properties.getUsername());
         config.setPassword(properties.getPassword());
-        config.setMaximumPoolSize(5);
+        config.setMaximumPoolSize(properties.getMaximumPoolSize());
         config.setPoolName("com.viettel.vtskit.logs");
-        config.setDriverClassName("org.mariadb.jdbc.Driver");
-        config.addDataSourceProperty( "cachePrepStmts" , "true" );
-        config.addDataSourceProperty( "prepStmtCacheSize" , "250" );
-        config.addDataSourceProperty( "prepStmtCacheSqlLimit" , "2048" );
+        config.setDriverClassName(properties.getDriver_class_name());
+        config.addDataSourceProperty( "cachePrepStmts" , properties.getCachePrepStmts() );
+        config.addDataSourceProperty( "prepStmtCacheSize" , properties.getPrepStmtCacheSize() );
+        config.addDataSourceProperty( "prepStmtCacheSqlLimit" , properties.getPrepStmtCacheSqlLimit() );
         ds = new HikariDataSource(config);
     }
 

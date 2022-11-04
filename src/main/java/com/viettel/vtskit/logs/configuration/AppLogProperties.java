@@ -3,7 +3,7 @@ package com.viettel.vtskit.logs.configuration;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-@ConfigurationProperties(prefix = "vtskit.logs.app-logs")
+@ConfigurationProperties(prefix = "logs.app-logs")
 public class AppLogProperties {
 
     @Value("${error-log-file-name:}")

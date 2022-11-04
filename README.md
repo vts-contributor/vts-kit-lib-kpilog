@@ -9,7 +9,7 @@ This library provides utilities that make it easy to add logging into spring boo
 <b>Output type supported</b>
 * Console (Default)
 * File
-* MariaDB (Use for KPI log)
+* MariaDB, Postgresql, MySql,... (Use for KPI log)
 
 <b>The built-in configuration</b>
 * Pattern:
@@ -41,12 +41,12 @@ Quick start
 
 * Then, add the following properties to your `application-*.yml` file.
 ```yaml
-vtskit:
-  logs:
-    level: INFO # Optional. Default is INFO
-    kpi-logs:
-      application-code: DEMO-APPLICATION # Default ApplicationCode value
-      service-code: ${spring.application.name} # Default ServiceCode value
+logs:
+  level: INFO # Optional. Default is INFO
+  kpi-logs:
+    application-code: DEMO-APPLICATION # Default ApplicationCode value
+    service-code: ${spring.application.name} # Default ServiceCode value
+  enable: true #enable logging kpi-log
 ```
 
 Usage
@@ -73,12 +73,11 @@ AppLogService.error(LOGGER, "error");
 
 To configure logging to the file, add below configuration to `application-*.yml` file:
 ```yaml
-vtskit:
-  logs:
-    log-folder: logs # Folder to save log file
-    app-logs:
-      error-log-file-name: ${spring.application.name}.error.log # File to save error log
-      console-log-file-name: ${spring.application.name}.log # File to save all log
+logs:
+  log-folder: logs # Folder to save log file
+  app-logs:
+    error-log-file-name: ${spring.application.name}.error.log # File to save error log
+    console-log-file-name: ${spring.application.name}.log # File to save all log
 ```
 
 ### Kpi Logging
@@ -87,19 +86,17 @@ By default, All requests will be automatically saved kpi log.
 
 To limit by url patterns, add below configuration to `application-*.yml` file:
 ```yaml
-vtskit:
-  logs:
-    kpi-logs:
-      allow-url-patterns: /**/getList,/**/update # Default is '/**' allow all requests
+logs:
+  kpi-logs:
+    allow-url-patterns: /**/getList,/**/update # Default is '/**' allow all requests
 ```
 
 To disable automation mode, add below configuration:
 
 ```yaml
-vtskit:
-  logs:
-    kpi-logs:
-      allow-url-patterns: ignore
+logs:
+  kpi-logs:
+    allow-url-patterns: ignore
 ```
 
 #### Manual
@@ -144,22 +141,27 @@ By default, KPI log will be logged to the console log. In addition, it can be co
 
 To configure logging to the file, add below configuration to `application-*.yml` file:
 ```yaml
-vtskit:
-  logs:
-    log-folder: logs # Folder to save log file
-    kpi-logs:
-      kpi-log-file-name: ${spring.application.name}.kpi.log # File to save kpi log
+logs:
+  log-folder: logs # Folder to save log file
+  kpi-logs:
+    kpi-log-file-name: ${spring.application.name}.kpi.log # File to save kpi log
 ```
 
 Similarly, to save the kpi log to the database, add below configuration to `application-*.yml` file:
 ```yaml
-vtskit:
-  logs:
-    kpi-logs:
-      datasource: # Configuration Maria DB for store kpi log
-        url: jdbc:mariadb://localhost:3307/test-database
-        username: root
-        password: root
+logs:
+  kpi-logs:
+    datasource: # Configuration DB for store kpi log
+      driver-class-name: org.mariadb.jdbc.Driver
+      url: jdbc:mariadb://localhost:3307/test-database
+      username: root
+      password: root
+      table-name: KPI_Log # Name of table is logging. Default is KPI_Log
+      maximum-pool-size: 100 # Default is 100
+      minimum-pool-size: 10 # Default is 10
+      cachePrepStmts: "true" # Default is true
+      prep-stmt-cache-size: "250" #Default is 250
+      prepStmtCacheSqlLimit: "2048" #Default is 2048
 ```
 The system will automatically create a table named `KPI_LOG` and save the kpi log data there.
 
