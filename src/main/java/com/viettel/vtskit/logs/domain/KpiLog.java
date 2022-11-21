@@ -3,9 +3,11 @@ package com.viettel.vtskit.logs.domain;
 import com.viettel.vtskit.logs.enums.TransactionStatus;
 import com.viettel.vtskit.logs.utils.DateUtils;
 import com.viettel.vtskit.logs.utils.StringUtils;
+import lombok.Data;
 
 import java.sql.Date;
 
+@Data
 public class KpiLog {
     private String applicationCode;
     private String serviceCode;
@@ -43,135 +45,6 @@ public class KpiLog {
         if (this.startTime != null && this.endTime != null) {
             duration = endTime.getTime() - startTime.getTime();
         }
-    }
-
-
-    public String getApplicationCode() {
-        return applicationCode;
-    }
-
-    public void setApplicationCode(String applicationCode) {
-        this.applicationCode = applicationCode;
-    }
-
-    public String getServiceCode() {
-        return serviceCode;
-    }
-
-    public void setServiceCode(String serviceCode) {
-        this.serviceCode = serviceCode;
-    }
-
-    public String getSessionId() {
-        return sessionId;
-    }
-
-    public void setSessionId(String sessionId) {
-        this.sessionId = sessionId;
-    }
-
-    public String getIpPortParentNode() {
-        return ipPortParentNode;
-    }
-
-    public void setIpPortParentNode(String ipPortParentNode) {
-        this.ipPortParentNode = ipPortParentNode;
-    }
-
-    public String getIpPortCurrentNode() {
-        return ipPortCurrentNode;
-    }
-
-    public void setIpPortCurrentNode(String ipPortCurrentNode) {
-        this.ipPortCurrentNode = ipPortCurrentNode;
-    }
-
-    public String getRequestContent() {
-        return requestContent;
-    }
-
-    public void setRequestContent(String requestContent) {
-        this.requestContent = requestContent;
-    }
-
-    public String getResponseContent() {
-        return responseContent;
-    }
-
-    public void setResponseContent(String responseContent) {
-        this.responseContent = responseContent;
-    }
-
-    public Date getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(Date startTime) {
-        this.startTime = startTime;
-    }
-
-    public Date getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(Date endTime) {
-        this.endTime = endTime;
-    }
-
-    public Long getDuration() {
-        return duration;
-    }
-
-    public void setDuration(Long duration) {
-        this.duration = duration;
-    }
-
-    public String getErrorCode() {
-        return errorCode;
-    }
-
-    public void setErrorCode(String errorCode) {
-        this.errorCode = errorCode;
-    }
-
-    public String getErrorDescription() {
-        return errorDescription;
-    }
-
-    public void setErrorDescription(String errorDescription) {
-        this.errorDescription = errorDescription;
-    }
-
-    public Integer getTransactionStatus() {
-        return transactionStatus;
-    }
-
-    public void setTransactionStatus(Integer transactionStatus) {
-        this.transactionStatus = transactionStatus;
-    }
-
-    public String getActionName() {
-        return actionName;
-    }
-
-    public void setActionName(String actionName) {
-        this.actionName = actionName;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getAccount() {
-        return account;
-    }
-
-    public void setAccount(String account) {
-        this.account = account;
     }
 
     @Override
