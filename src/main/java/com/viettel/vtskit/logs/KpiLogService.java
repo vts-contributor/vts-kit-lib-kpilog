@@ -4,7 +4,6 @@ import com.viettel.vtskit.logs.callback.QueryCallback;
 import com.viettel.vtskit.logs.configuration.AppInfo;
 import com.viettel.vtskit.logs.configuration.KpiDatasourceProperties;
 import com.viettel.vtskit.logs.configuration.KpiLogProperties;
-import com.viettel.vtskit.logs.configuration.LogProperties;
 import com.viettel.vtskit.logs.domain.KpiLog;
 import com.viettel.vtskit.logs.utils.CommonUtils;
 import com.viettel.vtskit.logs.utils.SqlUtils;
@@ -37,7 +36,7 @@ public class KpiLogService {
     }
 
     private boolean isUsingDB() {
-        return datasourceProperties != null && datasourceProperties.isUseDB();
+        return datasourceProperties != null && datasourceProperties.isEnabled()  && datasourceProperties.isUseDB();
     }
 
     private void createKpiLogTable() {
@@ -137,7 +136,7 @@ public class KpiLogService {
     }
 
     public void writeLog(KpiLog kpiLog) {
-        if (kpiLogProperties.getDatasource() != null && kpiLogProperties.getDatasource().isEnabled() && isUsingDB()){
+        if (isUsingDB()){
             if (StringUtils.isNullOrEmpty(kpiLog.getApplicationCode())) {
                 kpiLog.setApplicationCode(appInfo.getCode());
             }
