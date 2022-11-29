@@ -9,6 +9,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ConfigurationProperties(prefix = "logs.kpi-logs.datasource")
 public class KpiDatasourceProperties {
+    @Value("${enabled:false}")
+    private boolean enabled;
 
     @Value("${url:}")
     private String url;
@@ -39,6 +41,14 @@ public class KpiDatasourceProperties {
 
     @Value("${minimumPoolSize:10}")
     private Integer minimumPoolSize;
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
 
     public boolean isUseDB() {
         return !StringUtils.isNullOrEmpty(url);

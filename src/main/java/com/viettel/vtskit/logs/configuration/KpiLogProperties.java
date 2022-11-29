@@ -15,9 +15,6 @@ public class KpiLogProperties {
     @Value("${kpi-log-file-name:}")
     private String kpiLogFileName;
 
-    @Value("${enabled:false}")
-    private boolean enabled;
-
     @NestedConfigurationProperty
     private KpiDatasourceProperties datasource;
 

@@ -26,7 +26,6 @@ public class KpiLogService {
     private KpiDatasourceProperties datasourceProperties;
     private AppInfo appInfo;
     private TaskExecutor taskExecutor;
-    private LogProperties logProperties;
     private static final Marker KPI_LOG_MARKER = MarkerFactory.getMarker("KPI_LOG");
     private String INSERT_KPI_LOG_QUERY;
     private String CREATE_KPI_LOG_TABLE_QUERY;
@@ -138,7 +137,7 @@ public class KpiLogService {
     }
 
     public void writeLog(KpiLog kpiLog) {
-        if (kpiLogProperties.isEnabled() && isUsingDB()) {
+        if (kpiLogProperties.getDatasource() != null && kpiLogProperties.getDatasource().isEnabled() && isUsingDB()){
             if (StringUtils.isNullOrEmpty(kpiLog.getApplicationCode())) {
                 kpiLog.setApplicationCode(appInfo.getCode());
             }
@@ -158,11 +157,6 @@ public class KpiLogService {
     @Autowired
     public void setAppInfo(AppInfo appInfo) {
         this.appInfo = appInfo;
-    }
-
-    @Autowired
-    void setLogProperties(LogProperties logProperties) {
-        this.logProperties = logProperties;
     }
 
     @Autowired

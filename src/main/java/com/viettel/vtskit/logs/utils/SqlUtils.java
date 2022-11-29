@@ -12,31 +12,32 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class SqlUtils {
-
-    private SqlUtils(){}
+    private SqlUtils() {
+    }
 
     public static void closeQuiet(AutoCloseable closeable) {
-        if(closeable == null){
+        if (closeable == null) {
             return;
         }
-        try{
+        try {
             closeable.close();
-        }catch (Exception exception) {
+        } catch (Exception exception) {
             AppLog.error(exception);
         }
     }
 
-    public static boolean runQuery(KpiDatasourceProperties properties, String query, QueryCallback callback){
+    public static boolean runQuery(KpiDatasourceProperties properties, String query, QueryCallback callback) {
         PreparedStatement statement = null;
         Connection connection = null;
         try {
             connection = DbDatasource.getInstance(properties).getConnection();
             statement = connection.prepareStatement(query);
-            if(callback != null){
+            if (callback != null) {
                 callback.bindParameters(statement);
             }
             return statement.execute();
         } catch (SQLException exception) {
+            AppLog.error(exception);
             return false;
         } finally {
             SqlUtils.closeQuiet(statement);
