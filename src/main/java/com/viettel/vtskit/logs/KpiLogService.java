@@ -1,6 +1,7 @@
 package com.viettel.vtskit.logs;
 
 import com.viettel.vtskit.logs.callback.QueryCallback;
+import com.viettel.vtskit.logs.configuration.AppInfo;
 import com.viettel.vtskit.logs.configuration.KpiDatasourceProperties;
 import com.viettel.vtskit.logs.configuration.KpiLogProperties;
 import com.viettel.vtskit.logs.configuration.LogProperties;
@@ -12,7 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.lang.NonNull;
 
@@ -24,26 +24,29 @@ import java.sql.Timestamp;
 public class KpiLogService {
     private KpiLogProperties kpiLogProperties;
     private KpiDatasourceProperties datasourceProperties;
+    private AppInfo appInfo;
     private TaskExecutor taskExecutor;
     private LogProperties logProperties;
     private static final Marker KPI_LOG_MARKER = MarkerFactory.getMarker("KPI_LOG");
     private String INSERT_KPI_LOG_QUERY;
     private String CREATE_KPI_LOG_TABLE_QUERY;
+
     @PostConstruct
-    private void init(){
+    private void init() {
         datasourceProperties = kpiLogProperties.getDatasource();
         createKpiLogTable();
     }
 
-    private boolean isUsingMariaDB(){
-        return datasourceProperties != null && datasourceProperties.isUseMariaDB();
+    private boolean isUsingDB() {
+        return datasourceProperties != null && datasourceProperties.isUseDB();
     }
 
-    private void createKpiLogTable(){
-        if(!isUsingMariaDB()){
+    private void createKpiLogTable() {
+        if (!isUsingDB()) {
             return;
         }
-        CREATE_KPI_LOG_TABLE_QUERY = "CREATE TABLE IF NOT EXISTS "+datasourceProperties.getTable_name() +"\n" +
+
+        CREATE_KPI_LOG_TABLE_QUERY = "CREATE TABLE IF NOT EXISTS " + datasourceProperties.getTable_name() + "\n" +
                 "(" +
                 "  ApplicationCode VARCHAR(200) DEFAULT NULL, \n" +
                 "  ServiceCode VARCHAR(200) DEFAULT NULL, \n" +
@@ -52,11 +55,11 @@ public class KpiLogService {
                 "  IP_Port_CurrentNode VARCHAR(200) DEFAULT NULL, \n" +
                 "  RequestContent text DEFAULT NULL, \n" +
                 "  ResponseContent text DEFAULT NULL, \n" +
-                "  StartTime Date DEFAULT NULL, \n" +
-                "  EndTime Date DEFAULT NULL, \n" +
+                "  StartTime timestamp  DEFAULT NULL, \n" +
+                "  EndTime timestamp  DEFAULT NULL, \n" +
                 "  Duration bigint DEFAULT NULL, \n" +
                 "  ErrorCode VARCHAR(200) DEFAULT NULL, \n" +
-                "  ErrorDescription VARCHAR(200) DEFAULT NULL, \n" +
+                "  ErrorDescription VARCHAR(1000) DEFAULT NULL, \n" +
                 "  TransactionStatus int DEFAULT NULL, \n" +
                 "  ActionName VARCHAR(200) DEFAULT NULL, \n" +
                 "  UserName VARCHAR(200) DEFAULT NULL, \n" +
@@ -65,8 +68,8 @@ public class KpiLogService {
         SqlUtils.runQuery(datasourceProperties, CREATE_KPI_LOG_TABLE_QUERY, null);
     }
 
-    private void insertKpiLogToDb(final KpiLog kpiLog){
-        INSERT_KPI_LOG_QUERY = "INSERT INTO "+ datasourceProperties.getTable_name() +"(\n" +
+    private void insertKpiLogToDb(final KpiLog kpiLog) {
+        INSERT_KPI_LOG_QUERY = "INSERT INTO " + datasourceProperties.getTable_name() + "(\n" +
                 "  ApplicationCode, \n" +
                 "  ServiceCode, \n" +
                 "  SessionID, \n" +
@@ -94,26 +97,32 @@ public class KpiLogService {
                 statement.setString(5, kpiLog.getIpPortCurrentNode());
                 statement.setString(6, kpiLog.getRequestContent());
                 statement.setString(7, kpiLog.getResponseContent());
-                if(kpiLog.getStartTime() == null){
+                if (kpiLog.getStartTime() == null) {
                     statement.setNull(8, java.sql.Types.NULL);
-                }else{
+                } else {
                     statement.setTimestamp(8, new Timestamp(kpiLog.getStartTime().getTime()));
                 }
-                if(kpiLog.getEndTime() == null){
+                if (kpiLog.getEndTime() == null) {
                     statement.setNull(9, java.sql.Types.NULL);
-                }else{
+                } else {
                     statement.setTimestamp(9, new Timestamp(kpiLog.getEndTime().getTime()));
                 }
-                if(kpiLog.getDuration() == null){
+                if (kpiLog.getDuration() == null) {
                     statement.setNull(10, java.sql.Types.NULL);
-                }else{
+                } else {
                     statement.setLong(10, kpiLog.getDuration());
                 }
                 statement.setString(11, kpiLog.getErrorCode());
-                statement.setString(12, kpiLog.getErrorDescription());
-                if(kpiLog.getTransactionStatus() == null){
+
+                if (kpiLog.getErrorDescription() != null && kpiLog.getErrorDescription().length() > 1000) {
+                    statement.setString(12, kpiLog.getErrorDescription().substring(0, 1000));
+                } else {
+                    statement.setString(12, kpiLog.getErrorDescription());
+                }
+
+                if (kpiLog.getTransactionStatus() == null) {
                     statement.setNull(13, java.sql.Types.NULL);
-                }else{
+                } else {
                     statement.setInt(13, kpiLog.getTransactionStatus());
                 }
                 statement.setString(14, kpiLog.getActionName());
@@ -123,25 +132,21 @@ public class KpiLogService {
         });
     }
 
-    public void writeFileLog(@NonNull Logger logger, KpiLog kpiLog){
-        if(logProperties.getEnable()) {
-            CommonUtils.addCodeLineNumber();
-            logger.info(KPI_LOG_MARKER, "{}", kpiLog);
-        }
-
+    public void writeFileLog(@NonNull Logger logger, KpiLog kpiLog) {
+        CommonUtils.addCodeLineNumber();
+        logger.info(KPI_LOG_MARKER, "{}", kpiLog);
     }
 
-    public void writeLog(@NonNull Logger logger, KpiLog kpiLog){
-        if(logProperties.getEnable()) {
+    public void writeLog(KpiLog kpiLog) {
+        if (kpiLogProperties.isEnabled() && isUsingDB()) {
             if (StringUtils.isNullOrEmpty(kpiLog.getApplicationCode())) {
-                kpiLog.setApplicationCode(kpiLogProperties.getApplicationCode());
+                kpiLog.setApplicationCode(appInfo.getCode());
             }
             if (StringUtils.isNullOrEmpty(kpiLog.getServiceCode())) {
-                kpiLog.setServiceCode(kpiLogProperties.getServiceCode());
+                kpiLog.setServiceCode(appInfo.getServiceCode());
             }
-            if (isUsingMariaDB()) {
-                taskExecutor.execute(() -> insertKpiLogToDb(kpiLog));
-            }
+
+            taskExecutor.execute(() -> insertKpiLogToDb(kpiLog));
         }
     }
 
@@ -150,7 +155,16 @@ public class KpiLogService {
         this.kpiLogProperties = kpiLogProperties;
     }
 
-    @Autowired void setLogProperties(LogProperties logProperties) { this.logProperties = logProperties;}
+    @Autowired
+    public void setAppInfo(AppInfo appInfo) {
+        this.appInfo = appInfo;
+    }
+
+    @Autowired
+    void setLogProperties(LogProperties logProperties) {
+        this.logProperties = logProperties;
+    }
+
     @Autowired
     public void setTaskExecutor(TaskExecutor taskExecutor) {
         this.taskExecutor = taskExecutor;

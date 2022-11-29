@@ -1,9 +1,9 @@
 package com.viettel.vtskit.logs.utils;
 
-import com.viettel.vtskit.logs.AppLogService;
+import com.viettel.vtskit.logs.AppLog;
 import com.viettel.vtskit.logs.callback.QueryCallback;
 import com.viettel.vtskit.logs.configuration.KpiDatasourceProperties;
-import com.viettel.vtskit.logs.datasource.MariaDbDatasource;
+import com.viettel.vtskit.logs.datasource.DbDatasource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,8 +12,6 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class SqlUtils {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(SqlUtils.class);
 
     private SqlUtils(){}
 
@@ -24,7 +22,7 @@ public class SqlUtils {
         try{
             closeable.close();
         }catch (Exception exception) {
-            AppLogService.error(LOGGER, exception);
+            AppLog.error(exception);
         }
     }
 
@@ -32,14 +30,13 @@ public class SqlUtils {
         PreparedStatement statement = null;
         Connection connection = null;
         try {
-            connection = MariaDbDatasource.getInstance(properties).getConnection();
+            connection = DbDatasource.getInstance(properties).getConnection();
             statement = connection.prepareStatement(query);
             if(callback != null){
                 callback.bindParameters(statement);
             }
             return statement.execute();
         } catch (SQLException exception) {
-            AppLogService.error(LOGGER, exception);
             return false;
         } finally {
             SqlUtils.closeQuiet(statement);

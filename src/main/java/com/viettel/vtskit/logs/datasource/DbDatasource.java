@@ -8,29 +8,30 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class MariaDbDatasource {
+public class DbDatasource {
     private HikariConfig config = new HikariConfig();
     private HikariDataSource ds;
 
-    private static AtomicReference<MariaDbDatasource> instance = new AtomicReference<>();
+    private static AtomicReference<DbDatasource> instance = new AtomicReference<>();
 
-    public static MariaDbDatasource getInstance(KpiDatasourceProperties properties) {
+    public static DbDatasource getInstance(KpiDatasourceProperties properties) {
         if (instance.get() == null) {
-            synchronized (MariaDbDatasource.class) {
+            synchronized (DbDatasource.class) {
                 if (instance.get() == null) {
-                    instance.set(new MariaDbDatasource(properties));
+                    instance.set(new DbDatasource(properties));
                 }
             }
         }
         return instance.get();
     }
 
-    private MariaDbDatasource(KpiDatasourceProperties properties) {
+    private DbDatasource(KpiDatasourceProperties properties) {
         config.setJdbcUrl(properties.getUrl());
         config.setUsername(properties.getUsername());
         config.setPassword(properties.getPassword());
         config.setMaximumPoolSize(properties.getMaximumPoolSize());
-        config.setPoolName("com.viettel.vtskit.logs");
+        config.setMinimumIdle(properties.getMinimumPoolSize());
+        config.setPoolName("com.viettel.vtskit.kpilog");
         config.setDriverClassName(properties.getDriver_class_name());
         config.addDataSourceProperty( "cachePrepStmts" , properties.getCachePrepStmts() );
         config.addDataSourceProperty( "prepStmtCacheSize" , properties.getPrepStmtCacheSize() );

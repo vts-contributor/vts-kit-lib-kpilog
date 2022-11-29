@@ -2,7 +2,7 @@ package com.viettel.vtskit.logs.utils;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.viettel.vtskit.logs.AppLogService;
+import com.viettel.vtskit.logs.AppLog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,7 +11,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class StringUtils {
-    private static final Logger LOGGER = LoggerFactory.getLogger(StringUtils.class);
     private static final Gson GSON = new Gson();
 
     private StringUtils(){}
@@ -27,7 +26,7 @@ public class StringUtils {
             }
             return GSON.toJson(object);
         }catch (Exception ex){
-            AppLogService.error(LOGGER, ex);
+            AppLog.error(ex);
             return null;
         }
     }
@@ -40,7 +39,7 @@ public class StringUtils {
             Type type = new TypeToken<HashMap<String, ?>>(){}.getType();
             return GSON.toJson(map, type);
         }catch (Exception ex){
-            AppLogService.error(LOGGER, ex);
+            AppLog.error( ex);
             return null;
         }
     }

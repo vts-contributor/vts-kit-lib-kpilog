@@ -1,8 +1,13 @@
 package com.viettel.vtskit.logs.configuration;
 
 import com.viettel.vtskit.logs.utils.StringUtils;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
 
+@Configuration
+@ConfigurationProperties(prefix = "logs.kpi-logs.datasource")
 public class KpiDatasourceProperties {
 
     @Value("${url:}")
@@ -15,77 +20,28 @@ public class KpiDatasourceProperties {
     private String password;
 
     @Value("${driver-class-name}")
-    private  String driver_class_name;
+    private String driver_class_name;
 
     @Value("{table-name}")
-    private  String table_name;
-    @Value("${cachePrepStmts}")
+    private String table_name;
+
+    @Value("${cachePrepStmts:true}")
     private String cachePrepStmts;
 
-    @Value("${prepStmtCacheSize}")
+    @Value("${prepStmtCacheSize:250}")
     private String prepStmtCacheSize;
 
-    @Value("${prepStmtCacheSqlLimit}")
+    @Value("${prepStmtCacheSqlLimit:2048}")
     private String prepStmtCacheSqlLimit;
 
-    @Value("${MaximumPoolSize}")
-    private int MaximumPoolSize;
+    @Value("${maximumPoolSize:100}")
+    private Integer maximumPoolSize;
 
-    @Value("${MinimumPoolSize}")
-    private int MinimumPoolSize;
+    @Value("${minimumPoolSize:10}")
+    private Integer minimumPoolSize;
 
-    public String getTable_name() {
-        return table_name;
-    }
-    public void setTable_name(String table_name) {
-        this.table_name = table_name;
-    }
-
-    public int getMaximumPoolSize() {
-        return MaximumPoolSize;
-    }
-
-    public void setMaximumPoolSize(int maximumPoolSize) {
-        MaximumPoolSize = maximumPoolSize;
-    }
-
-    public int getMinimumPoolSize() {
-        return MinimumPoolSize;
-    }
-
-    public void setMinimumPoolSize(int minimumPoolSize) {
-        MinimumPoolSize = minimumPoolSize;
-    }
-
-    public String getCachePrepStmts() {
-        return cachePrepStmts;
-    }
-
-    public void setCachePrepStmts(String cachePrepStmts) {
-        this.cachePrepStmts = cachePrepStmts;
-    }
-
-    public String getPrepStmtCacheSize() {
-        return prepStmtCacheSize;
-    }
-
-    public void setPrepStmtCacheSize(String prepStmtCacheSize) {
-        this.prepStmtCacheSize = prepStmtCacheSize;
-    }
-
-    public String getPrepStmtCacheSqlLimit() {
-        return prepStmtCacheSqlLimit;
-    }
-
-    public void setPrepStmtCacheSqlLimit(String prepStmtCacheSqlLimit) {
-        this.prepStmtCacheSqlLimit = prepStmtCacheSqlLimit;
-    }
-    public String getDriver_class_name() {
-        return driver_class_name;
-    }
-
-    public void setDriver_class_name(String driver_class_name) {
-        this.driver_class_name = driver_class_name;
+    public boolean isUseDB() {
+        return !StringUtils.isNullOrEmpty(url);
     }
 
     public String getUrl() {
@@ -112,7 +68,59 @@ public class KpiDatasourceProperties {
         this.password = password;
     }
 
-    public boolean isUseMariaDB(){
-        return !StringUtils.isNullOrEmpty(url);
+    public String getDriver_class_name() {
+        return driver_class_name;
+    }
+
+    public void setDriver_class_name(String driver_class_name) {
+        this.driver_class_name = driver_class_name;
+    }
+
+    public String getTable_name() {
+        return table_name;
+    }
+
+    public void setTable_name(String table_name) {
+        this.table_name = table_name;
+    }
+
+    public String getCachePrepStmts() {
+        return cachePrepStmts == null ? "true" : cachePrepStmts;
+    }
+
+    public void setCachePrepStmts(String cachePrepStmts) {
+        this.cachePrepStmts = cachePrepStmts;
+    }
+
+    public String getPrepStmtCacheSize() {
+        return prepStmtCacheSize == null ? "250" : prepStmtCacheSize;
+    }
+
+    public void setPrepStmtCacheSize(String prepStmtCacheSize) {
+        this.prepStmtCacheSize = prepStmtCacheSize;
+    }
+
+    public String getPrepStmtCacheSqlLimit() {
+        return prepStmtCacheSqlLimit == null ? "2048" : prepStmtCacheSqlLimit;
+    }
+
+    public void setPrepStmtCacheSqlLimit(String prepStmtCacheSqlLimit) {
+        this.prepStmtCacheSqlLimit = prepStmtCacheSqlLimit;
+    }
+
+    public Integer getMaximumPoolSize() {
+        return maximumPoolSize == null ? 100 : maximumPoolSize;
+    }
+
+    public void setMaximumPoolSize(Integer maximumPoolSize) {
+        this.maximumPoolSize = maximumPoolSize;
+    }
+
+    public Integer getMinimumPoolSize() {
+        return minimumPoolSize == null ? 10 : minimumPoolSize;
+    }
+
+    public void setMinimumPoolSize(Integer minimumPoolSize) {
+        this.minimumPoolSize = minimumPoolSize;
     }
 }

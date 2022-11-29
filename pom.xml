@@ -77,14 +77,6 @@
         </dependency>
         <!-- End Spring Boot -->
 
-        <!-- Logback Extension-->
-        <dependency>
-            <groupId>org.codehaus.janino</groupId>
-            <artifactId>janino</artifactId>
-            <version>3.1.7</version>
-        </dependency>
-        <!-- End Logback Extension-->
-
         <!-- Maria Database-->
         <dependency>
             <groupId>org.mariadb.jdbc</groupId>

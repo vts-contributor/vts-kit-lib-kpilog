@@ -4,12 +4,11 @@ import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-@ConfigurationProperties(prefix ="logs")
+@ConfigurationProperties(prefix = "app")
 @Data
-public class LogProperties {
-    @Value("${level:INFO}")
-    private String level;
-    @Value("${log-folder:}")
-    private String logFolder;
-
+public class AppInfo {
+    @Value("${app.application.code:N/A}")
+    String code;
+    @Value("${app.service.code:N/A}")
+    String serviceCode;
 }

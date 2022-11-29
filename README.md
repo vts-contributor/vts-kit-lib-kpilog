@@ -3,17 +3,15 @@ Logging Library for Spring Boot
 This library provides utilities that make it easy to add logging into spring boot project
 
 <b>Feature List</b>
-* [Application Logging](#Application-Logging)
 * [Kpi Logging](#Kpi-Logging)
+* [Application Logging](#Log exception)
 
 <b>Output type supported</b>
-* Console (Default)
 * File
 * MariaDB, Postgresql, MySql,... (Use for KPI log)
 
 <b>The built-in configuration</b>
 * Pattern:
-    * Application Log Message Pattern: `%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5p %c{1}:%X{line} - %m%n`
     * KPI Log Message Pattern: `ApplicationCode|ServiceCode|SessionId|IpPortParentNode|IpPortCurrentNode|RequestContent|ResponseContent|StartTime|EndTime|Duration|ErrorCode|ErrorDescription|TransactionStatus|ActionName|Username|Account`
     * Archived File Name Pattern: `archived-*.zip`
 * File Rolling Policy:
@@ -26,84 +24,45 @@ Quick start
 ```xml
 <dependency>
     <groupId>com.atviettelsolutions</groupId>
-    <artifactId>vts-kit-ms-logs-handler</artifactId>
-    <version>1.0.1</version>
+    <artifactId>vts-kit-lib-kpilog</artifactId>
+    <version>1.0.0</version>
 </dependency>
-```
-
-* Add line `<include resource="vtskit-default-logback.xml"/>` to your `logback.xml` file. Example:
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<configuration>
-    <include resource="vtskit-default-logback.xml"/>
-</configuration>
 ```
 
 * Then, add the following properties to your `application-*.yml` file.
 ```yaml
 logs:
-  level: INFO # Optional. Default is INFO
+  level: INFO
+  log-folder: D:\log_kpi # Need change
+  app-logs:
+    console-log-file-name: info_log.log
+    error-log-file-name: error_log.log
   kpi-logs:
-    application-code: DEMO-APPLICATION # Default ApplicationCode value
-    service-code: ${spring.application.name} # Default ServiceCode value
-  enable: true #enable logging kpi-log
+    enabled: true #set false to disable write to DB
+    kpi-log-file-name: kpi_log.log
+    application-code: APP_CODE
+    service-code: SERVICE_XXX
+    system-code: SYSTEM_XXX
+    datasource:
+      driver-class-name: org.postgresql.Driver
+      url: jdbc:postgresql://10.60.109.19:8082/postgres?currentSchema=gis_portal
+      username: postgres
+      password: postgres
+      table-name: KPI_Log
 ```
+The system will automatically create a table named `KPI_LOG` and save the kpi log data there.
 
 Usage
 -------
-### Application Logging
-By default, application log will be logged to the console log.
-
-Example code to write application log:
-```java
-private static final Logger LOGGER = LoggerFactory.getLogger(<Your-Class>);
-
-// Info level
-AppLogService.info(LOGGER, "message");
-
-// Debug level
-AppLogService.debug(LOGGER, "message");
-
-// Warning level
-AppLogService.warn(LOGGER, "message");
-
-// Error level
-AppLogService.error(LOGGER, "error");
-```
-
-To configure logging to the file, add below configuration to `application-*.yml` file:
-```yaml
-logs:
-  log-folder: logs # Folder to save log file
-  app-logs:
-    error-log-file-name: ${spring.application.name}.error.log # File to save error log
-    console-log-file-name: ${spring.application.name}.log # File to save all log
-```
 
 ### Kpi Logging
-#### Automation
-By default, All requests will be automatically saved kpi log.
 
-To limit by url patterns, add below configuration to `application-*.yml` file:
-```yaml
-logs:
-  kpi-logs:
-    allow-url-patterns: /**/getList,/**/update # Default is '/**' allow all requests
-```
-
-To disable automation mode, add below configuration:
-
-```yaml
-logs:
-  kpi-logs:
-    allow-url-patterns: ignore
-```
-
-#### Manual
-If you want to handle saving kpi log manually, follow the steps below
+#### Save KPI Log to database
+Follow the steps below:
 
 <b>Step 1</b>: Define `KpiLogService` instance:
 ```java
+
 private KpiLogService kpiLogService;
 
 @Autowired
@@ -114,56 +73,45 @@ public void setKpiLogService(KpiLogService kpiLogService) {
 
 <b>Step 2</b>: Set KPI Log information using `KpiLog.Builder`:
 ```java
-KpiLog.Builder builder = new KpiLog.Builder();
-builder.sessionId("SessionId");
-builder.ipPortParentNode("127.0.0.1");
-builder.ipPortCurrentNode("127.0.0.1");
-builder.requestContent("requestContent");
-builder.responseContent("responseContent");
-builder.startTime(new Date());
-builder.errorCode("00");
-builder.errorDescription("");
-builder.transactionStatus(TransactionStatus.SUCCESS);
-builder.actionName("actionName");
-builder.username("username");
-builder.account("account");
-builder.endTime(new Date());
+ KpiLog kpiLog = new KpiLog.Builder()
+         .sessionId("SessionId")
+         .applicationCode("APPLICATTION_CODE")
+         .serviceCode("SERVICE_CODE")
+         .ipPortParentNode("127.0.0.1")
+         .ipPortCurrentNode("127.0.0.1")
+         .requestContent("requestContent")
+         .responseContent("responseContent")
+         .startTime(new Date())
+         .errorCode("00")
+         .errorDescription("errorDescription")
+         .transactionStatus(TransactionStatus.SUCCESS)
+         .actionName("actionName")
+         .username("username")
+         .account("account")
+         .endTime(new Date())
+         .build();
+    
 ```
 
 <b>Step 3</b>: Execute save KPI Log
 ```java
-kpiLogService.writeLog(LOGGER, builder.build());
+kpiLogService.writeLog(kpiLog);
 ```
 
-#### Output configuration
+#### Application Logging
+To write log error, info, debug just add the codes like below:
 
-By default, KPI log will be logged to the console log. In addition, it can be configured to write to file or database.
-
-To configure logging to the file, add below configuration to `application-*.yml` file:
-```yaml
-logs:
-  log-folder: logs # Folder to save log file
-  kpi-logs:
-    kpi-log-file-name: ${spring.application.name}.kpi.log # File to save kpi log
+```java
+//Define Logger
+private Logger LOGGER = LoggerFactory.getLogger(TestController.class);
+    
+    try {
+      //some code
+    }catch (Exception e) {
+     //Save log to error_log.log
+     AppLogService.error(LOGGER, e);
+    }
 ```
-
-Similarly, to save the kpi log to the database, add below configuration to `application-*.yml` file:
-```yaml
-logs:
-  kpi-logs:
-    datasource: # Configuration DB for store kpi log
-      driver-class-name: org.mariadb.jdbc.Driver
-      url: jdbc:mariadb://localhost:3307/test-database
-      username: root
-      password: root
-      table-name: KPI_Log # Name of table is logging. Default is KPI_Log
-      maximum-pool-size: 100 # Default is 100
-      minimum-pool-size: 10 # Default is 10
-      cachePrepStmts: "true" # Default is true
-      prep-stmt-cache-size: "250" #Default is 250
-      prepStmtCacheSqlLimit: "2048" #Default is 2048
-```
-The system will automatically create a table named `KPI_LOG` and save the kpi log data there.
 
 Contribute
 -------
