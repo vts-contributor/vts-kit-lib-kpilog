@@ -29,7 +29,7 @@ Quick start
 </dependency>
 ```
 
-* Then, add the following properties to your `application-*.yml` file.
+* Then, add the following properties to your `application.properties` file.
 ```properties
 logs.level= INFO
 logs.log-folder= D:\\log_kpi
