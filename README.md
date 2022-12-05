@@ -4,7 +4,7 @@ This library provides utilities that make it easy to add logging into spring boo
 
 <b>Feature List</b>
 * [Kpi Logging](#Kpi-Logging)
-* [Application Logging](#Log exception)
+* [Application Logging](#application logging)
 
 <b>Output type supported</b>
 * File
@@ -30,25 +30,19 @@ Quick start
 ```
 
 * Then, add the following properties to your `application-*.yml` file.
-```yaml
-logs:
-  level: INFO
-  log-folder: D:\log_kpi # Need change
-  app-logs:
-    console-log-file-name: info_log.log
-    error-log-file-name: error_log.log
-  kpi-logs:
-    enabled: true #set false to disable write to DB
-    kpi-log-file-name: kpi_log.log
-    application-code: APP_CODE
-    service-code: SERVICE_XXX
-    system-code: SYSTEM_XXX
-    datasource:
-      driver-class-name: org.postgresql.Driver
-      url: jdbc:postgresql://10.60.109.19:8082/postgres?currentSchema=gis_portal
-      username: postgres
-      password: postgres
-      table-name: KPI_Log
+```properties
+logs.level= INFO
+logs.log-folder= D:\\log_kpi
+logs.app-logs.console-log-file-name=info_log.log
+logs.app-logs.error-log-file-name:error_log.log
+logs.kpi-logs.enabled: true
+logs.kpi-logs.kpi-log-file-name: kpi_log.log
+logs.kpi-logs.datasource.enabled: true
+logs.kpi-logs.datasource.driver-class-name: org.postgresql.Driver
+logs.kpi-logs.datasource.url: jdbc:postgresql://10.60.109.19:8082/postgres?currentSchema=gis_portal
+logs.kpi-logs.datasource.username: postgres
+logs.kpi-logs.datasource.password: postgres
+logs.kpi-logs.datasource.table-name: KPI_Log
 ```
 The system will automatically create a table named `KPI_LOG` and save the kpi log data there.
 
@@ -62,13 +56,8 @@ Follow the steps below:
 
 <b>Step 1</b>: Define `KpiLogService` instance:
 ```java
-
-private KpiLogService kpiLogService;
-
 @Autowired
-public void setKpiLogService(KpiLogService kpiLogService) {
-    this.kpiLogService = kpiLogService;
-}
+private KpiLogService kpiLogService;
 ```
 
 <b>Step 2</b>: Set KPI Log information using `KpiLog.Builder`:
@@ -101,16 +90,15 @@ kpiLogService.writeLog(kpiLog);
 #### Application Logging
 To write log error, info, debug just add the codes like below:
 
-```java
-//Define Logger
-private Logger LOGGER = LoggerFactory.getLogger(TestController.class);
-    
+```java    
     try {
-      //some code
+     //log info
+      AppLog.info("Test log info");
     }catch (Exception e) {
-     //Save log to error_log.log
+     //log error 
      AppLogService.error(LOGGER, e);
     }
+
 ```
 
 Contribute

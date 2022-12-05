@@ -14,7 +14,7 @@
   <mirrors>
     <mirror>
       <id>central-secure</id>
-      <url>https://repo.maven.apache.org/maven2/</url>
+      <url>http://10.254.144.164:8081/repository/maven-public/</url>
       <mirrorOf>central</mirrorOf>
     </mirror>
   </mirrors>
