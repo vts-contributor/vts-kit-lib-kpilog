@@ -4,7 +4,7 @@ This library provides utilities that make it easy to add logging into spring boo
 
 <b>Feature List</b>
 * [Kpi Logging](#Kpi-Logging)
-* [Application Logging](#application logging)
+* [Application Logging](#Application-Logging)
 
 <b>Output type supported</b>
 * File
