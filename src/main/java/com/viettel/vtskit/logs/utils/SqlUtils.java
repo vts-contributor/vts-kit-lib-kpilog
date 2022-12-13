@@ -1,6 +1,5 @@
 package com.viettel.vtskit.logs.utils;
 
-import com.viettel.vtskit.logs.AppLog;
 import com.viettel.vtskit.logs.callback.QueryCallback;
 import com.viettel.vtskit.logs.configuration.KpiDatasourceProperties;
 import com.viettel.vtskit.logs.datasource.DbDatasource;
@@ -12,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class SqlUtils {
+    private static final Logger LOGGER = LoggerFactory.getLogger(SqlUtils.class);
     private SqlUtils() {
     }
 
@@ -22,7 +22,7 @@ public class SqlUtils {
         try {
             closeable.close();
         } catch (Exception exception) {
-            AppLog.error(exception);
+            LOGGER.error("closeQuiet",exception);
         }
     }
 
@@ -37,7 +37,7 @@ public class SqlUtils {
             }
             return statement.execute();
         } catch (SQLException exception) {
-            AppLog.error(exception);
+            LOGGER.error("runQuery",exception);
             return false;
         } finally {
             SqlUtils.closeQuiet(statement);

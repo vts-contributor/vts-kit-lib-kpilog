@@ -130,11 +130,6 @@ public class KpiLogService {
         });
     }
 
-    public void writeFileLog(@NonNull Logger logger, KpiLog kpiLog) {
-        CommonUtils.addCodeLineNumber();
-        logger.info(KPI_LOG_MARKER, "{}", kpiLog);
-    }
-
     public void writeLog(KpiLog kpiLog) {
         if (isUsingDB()){
             if (StringUtils.isNullOrEmpty(kpiLog.getApplicationCode())) {
