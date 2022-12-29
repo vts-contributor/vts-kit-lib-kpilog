@@ -39,9 +39,9 @@ logs.kpi-logs.enabled: true
 logs.kpi-logs.kpi-log-file-name: kpi_log.log
 logs.kpi-logs.datasource.enabled: true
 logs.kpi-logs.datasource.driver-class-name: org.postgresql.Driver
-logs.kpi-logs.datasource.url: jdbc:postgresql://10.60.109.19:8082/postgres?currentSchema=gis_portal
-logs.kpi-logs.datasource.username: postgres
-logs.kpi-logs.datasource.password: postgres
+logs.kpi-logs.datasource.url: DB_URL
+logs.kpi-logs.datasource.username: USER_NAME
+logs.kpi-logs.datasource.password: USER_PS
 logs.kpi-logs.datasource.table-name: KPI_Log
 ```
 The system will automatically create a table named `KPI_LOG` and save the kpi log data there.
