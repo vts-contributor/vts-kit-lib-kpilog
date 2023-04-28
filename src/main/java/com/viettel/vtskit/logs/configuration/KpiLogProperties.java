@@ -12,9 +12,6 @@ import org.springframework.context.annotation.Configuration;
 @Data
 public class KpiLogProperties {
 
-    @Value("${kpi-log-file-name:}")
-    private String kpiLogFileName;
-
     @NestedConfigurationProperty
     private KpiDatasourceProperties datasource;
 

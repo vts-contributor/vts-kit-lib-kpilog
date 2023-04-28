@@ -5,15 +5,12 @@ import com.viettel.vtskit.logs.configuration.AppInfo;
 import com.viettel.vtskit.logs.configuration.KpiDatasourceProperties;
 import com.viettel.vtskit.logs.configuration.KpiLogProperties;
 import com.viettel.vtskit.logs.domain.KpiLog;
-import com.viettel.vtskit.logs.utils.CommonUtils;
 import com.viettel.vtskit.logs.utils.SqlUtils;
 import com.viettel.vtskit.logs.utils.StringUtils;
-import org.slf4j.Logger;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.task.TaskExecutor;
-import org.springframework.lang.NonNull;
 
 import javax.annotation.PostConstruct;
 import java.sql.PreparedStatement;
@@ -33,6 +30,8 @@ public class KpiLogService {
     private void init() {
         datasourceProperties = kpiLogProperties.getDatasource();
         createKpiLogTable();
+        createKpiPortalTable();
+        createKpiDefTable();
     }
 
     private boolean isUsingDB() {
@@ -44,7 +43,7 @@ public class KpiLogService {
             return;
         }
 
-        CREATE_KPI_LOG_TABLE_QUERY = "CREATE TABLE IF NOT EXISTS " + datasourceProperties.getTable_name() + "\n" +
+        CREATE_KPI_LOG_TABLE_QUERY = "CREATE TABLE IF NOT EXISTS " + datasourceProperties.getTableName() + "\n" +
                 "(" +
                 "  ApplicationCode VARCHAR(200) DEFAULT NULL, \n" +
                 "  ServiceCode VARCHAR(200) DEFAULT NULL, \n" +
@@ -64,10 +63,50 @@ public class KpiLogService {
                 "  Account VARCHAR(200) DEFAULT NULL\n" +
                 ");";
         SqlUtils.runQuery(datasourceProperties, CREATE_KPI_LOG_TABLE_QUERY, null);
+
     }
 
+    private void createKpiPortalTable() {
+        if (!isUsingDB()) {
+            return;
+        }
+
+        String createKpiPortalSQL = "CREATE TABLE IF NOT EXISTS " + datasourceProperties.getKpiPortalTableName() + "\n" +
+                "(" +
+                "  kpi_date timestamp  DEFAULT NULL, \n" +
+                "  time VARCHAR(200) DEFAULT NULL, \n" +
+                "  action_name VARCHAR(200) DEFAULT NULL, \n" +
+                "  kpi_name VARCHAR(200) DEFAULT NULL, \n" +
+                "  numerator bigint DEFAULT NULL, \n" +
+                "  denominator bigint DEFAULT NULL, \n" +
+                "  rate DOUBLE PRECISION DEFAULT NULL, \n" +
+                "  numerator_accumulated bigint  DEFAULT NULL, \n" +
+                "  denominator_accumulated bigint  DEFAULT NULL, \n" +
+                "  rate_accumulated DOUBLE PRECISION DEFAULT NULL \n" +
+                ");";
+        SqlUtils.runQuery(datasourceProperties, createKpiPortalSQL, null);
+
+    }
+
+    private void createKpiDefTable() {
+        if (!isUsingDB()) {
+            return;
+        }
+
+        String createKpiPortalSQL = "CREATE TABLE IF NOT EXISTS " + datasourceProperties.getKpiDefTableName() + "\n" +
+                "(" +
+                "  code VARCHAR(200) DEFAULT NULL, \n" +
+                "  name VARCHAR(200) DEFAULT NULL, \n" +
+                "  kpi_duration integer DEFAULT NULL, \n" +
+                "  status integer DEFAULT NULL \n" +
+                ");";
+        SqlUtils.runQuery(datasourceProperties, createKpiPortalSQL, null);
+
+    }
+
+
     private void insertKpiLogToDb(final KpiLog kpiLog) {
-        INSERT_KPI_LOG_QUERY = "INSERT INTO " + datasourceProperties.getTable_name() + "(\n" +
+        INSERT_KPI_LOG_QUERY = "INSERT INTO " + datasourceProperties.getTableName() + "(\n" +
                 "  ApplicationCode, \n" +
                 "  ServiceCode, \n" +
                 "  SessionID, \n" +
@@ -135,6 +174,7 @@ public class KpiLogService {
             if (StringUtils.isNullOrEmpty(kpiLog.getApplicationCode())) {
                 kpiLog.setApplicationCode(appInfo.getCode());
             }
+
             if (StringUtils.isNullOrEmpty(kpiLog.getServiceCode())) {
                 kpiLog.setServiceCode(appInfo.getServiceCode());
             }

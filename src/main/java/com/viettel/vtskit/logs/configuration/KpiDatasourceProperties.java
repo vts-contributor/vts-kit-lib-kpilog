@@ -24,8 +24,14 @@ public class KpiDatasourceProperties {
     @Value("${driver-class-name}")
     private String driver_class_name;
 
-    @Value("{table-name}")
-    private String table_name;
+    @Value("{table-name:kpi_log}")
+    private String tableName;
+
+    @Value("{kpi-portal-table-name:kpi_portal}")
+    private String kpiPortalTableName;
+
+    @Value("{kpi-def-table-name:kpi_def}")
+    private String kpiDefTableName;
 
     @Value("${cachePrepStmts:true}")
     private String cachePrepStmts;
@@ -86,12 +92,28 @@ public class KpiDatasourceProperties {
         this.driver_class_name = driver_class_name;
     }
 
-    public String getTable_name() {
-        return table_name;
+    public String getTableName() {
+        return tableName == null ? "kpi_log" : tableName;
     }
 
-    public void setTable_name(String table_name) {
-        this.table_name = table_name;
+    public void setTableName(String tableName) {
+        this.tableName = tableName;
+    }
+
+    public String getKpiPortalTableName() {
+        return kpiPortalTableName == null ? "kpi_portal" : kpiPortalTableName;
+    }
+
+    public void setKpiPortalTableName(String kpiPortalTableName) {
+        this.kpiPortalTableName = kpiPortalTableName;
+    }
+
+    public String getKpiDefTableName() {
+        return kpiDefTableName == null ? "kpi_def" : kpiDefTableName;
+    }
+
+    public void setKpiDefTableName(String kpiDefTableName) {
+        this.kpiDefTableName = kpiDefTableName;
     }
 
     public String getCachePrepStmts() {

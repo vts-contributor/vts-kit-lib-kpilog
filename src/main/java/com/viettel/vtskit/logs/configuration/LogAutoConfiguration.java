@@ -10,7 +10,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-@EnableConfigurationProperties({AppLogProperties.class, KpiLogProperties.class, LogProperties.class,AppInfo.class})
+@EnableConfigurationProperties({ KpiLogProperties.class, AppInfo.class})
 public class LogAutoConfiguration implements WebMvcConfigurer {
 
     private KpiLogProperties kpiLogProperties;

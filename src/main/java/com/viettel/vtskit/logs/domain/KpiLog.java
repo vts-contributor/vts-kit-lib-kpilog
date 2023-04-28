@@ -5,7 +5,8 @@ import com.viettel.vtskit.logs.utils.DateUtils;
 import com.viettel.vtskit.logs.utils.StringUtils;
 import lombok.Data;
 
-import java.sql.Date;
+import java.util.Date;
+
 
 @Data
 public class KpiLog {
@@ -77,8 +78,8 @@ public class KpiLog {
         private String ipPortCurrentNode;
         private String requestContent;
         private String responseContent;
-        private java.util.Date startTime;
-        private java.util.Date endTime;
+        private Date startTime;
+        private Date endTime;
         private String errorCode;
         private String errorDescription;
         private TransactionStatus transactionStatus;
@@ -121,12 +122,12 @@ public class KpiLog {
             return this;
         }
 
-        public KpiLog.Builder startTime(java.util.Date startTime) {
+        public KpiLog.Builder startTime(Date startTime) {
             this.startTime = startTime;
             return this;
         }
 
-        public KpiLog.Builder endTime(java.util.Date endTime) {
+        public KpiLog.Builder endTime(Date endTime) {
             this.endTime = endTime;
             return this;
         }
