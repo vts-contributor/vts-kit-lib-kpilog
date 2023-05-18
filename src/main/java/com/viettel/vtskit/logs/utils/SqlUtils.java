@@ -12,6 +12,7 @@ import java.sql.SQLException;
 
 public class SqlUtils {
     private static final Logger LOGGER = LoggerFactory.getLogger(SqlUtils.class);
+
     private SqlUtils() {
     }
 
@@ -22,7 +23,7 @@ public class SqlUtils {
         try {
             closeable.close();
         } catch (Exception exception) {
-            LOGGER.error("closeQuiet",exception);
+            LOGGER.error("closeQuiet", exception);
         }
     }
 
@@ -37,7 +38,10 @@ public class SqlUtils {
             }
             return statement.execute();
         } catch (SQLException exception) {
-            LOGGER.error("runQuery",exception);
+            LOGGER.error("runQuery", exception);
+            return false;
+        } catch (Exception exception) {
+            LOGGER.error("runQuery", exception);
             return false;
         } finally {
             SqlUtils.closeQuiet(statement);

@@ -25,8 +25,8 @@ public class LogAutoConfiguration implements WebMvcConfigurer {
     @Bean
     public TaskExecutor threadPoolTaskExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setCorePoolSize(3);
-        executor.setMaxPoolSize(6);
+        executor.setCorePoolSize(500);
+        executor.setMaxPoolSize(500);
         executor.setThreadNamePrefix("vts-kit-lib-kpilog-");
         executor.initialize();
         return executor;

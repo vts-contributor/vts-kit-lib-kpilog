@@ -12,6 +12,9 @@ import org.springframework.context.annotation.Configuration;
 @Data
 public class KpiLogProperties {
 
+    @Value("${logs.kpi-logs.time-save-data:}")
+    private Integer timeSaveData;
+
     @NestedConfigurationProperty
     private KpiDatasourceProperties datasource;
 

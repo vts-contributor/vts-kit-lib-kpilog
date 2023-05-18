@@ -36,6 +36,7 @@ public class DbDatasource {
         config.addDataSourceProperty( "cachePrepStmts" , properties.getCachePrepStmts() );
         config.addDataSourceProperty( "prepStmtCacheSize" , properties.getPrepStmtCacheSize() );
         config.addDataSourceProperty( "prepStmtCacheSqlLimit" , properties.getPrepStmtCacheSqlLimit() );
+        config.setConnectionTimeout(20000);
         ds = new HikariDataSource(config);
     }
 

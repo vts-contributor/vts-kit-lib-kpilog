@@ -1,2 +1,3 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.viettel.vtskit.logs.configuration.LogAutoConfiguration
+com.viettel.vtskit.logs.configuration.LogAutoConfiguration,\
+com.viettel.vtskit.logs.schedule.Schedule

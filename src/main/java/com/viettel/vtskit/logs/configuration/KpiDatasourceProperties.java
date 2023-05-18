@@ -27,12 +27,6 @@ public class KpiDatasourceProperties {
     @Value("{table-name:kpi_log}")
     private String tableName;
 
-    @Value("{kpi-portal-table-name:kpi_portal}")
-    private String kpiPortalTableName;
-
-    @Value("{kpi-def-table-name:kpi_def}")
-    private String kpiDefTableName;
-
     @Value("${cachePrepStmts:true}")
     private String cachePrepStmts;
 
@@ -98,22 +92,6 @@ public class KpiDatasourceProperties {
 
     public void setTableName(String tableName) {
         this.tableName = tableName;
-    }
-
-    public String getKpiPortalTableName() {
-        return kpiPortalTableName == null ? "kpi_portal" : kpiPortalTableName;
-    }
-
-    public void setKpiPortalTableName(String kpiPortalTableName) {
-        this.kpiPortalTableName = kpiPortalTableName;
-    }
-
-    public String getKpiDefTableName() {
-        return kpiDefTableName == null ? "kpi_def" : kpiDefTableName;
-    }
-
-    public void setKpiDefTableName(String kpiDefTableName) {
-        this.kpiDefTableName = kpiDefTableName;
     }
 
     public String getCachePrepStmts() {

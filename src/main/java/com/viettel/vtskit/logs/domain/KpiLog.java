@@ -169,15 +169,10 @@ public class KpiLog {
             if (transactionStatus != null) {
                 transactionStatusVal = this.transactionStatus.getValue();
             }
-            if(startTime != null){
-                startTimeVal = new Date(startTime.getTime());
-            }
-            if(endTime != null){
-                endTimeVal = new Date(endTime.getTime());
-            }
+
             return new KpiLog(applicationCode, serviceCode, sessionId, ipPortParentNode,
                     ipPortCurrentNode, requestContent, responseContent,
-                    startTimeVal, endTimeVal, errorCode, errorDescription, transactionStatusVal,
+                    startTime, endTime, errorCode, errorDescription, transactionStatusVal,
                     actionName, username, account);
         }
     }
