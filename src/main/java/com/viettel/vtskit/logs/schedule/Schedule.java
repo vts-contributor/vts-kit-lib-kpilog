@@ -35,20 +35,23 @@ public class Schedule {
     }
 
 
-    @Scheduled(cron = "@daily")
+    @Scheduled(cron = "0 1 0 * * ?")
     public void deleteKPILog() {
-        final Integer timeSaveData = kpiLogProperties.getTimeSaveData();
-        if (timeSaveData != null && timeSaveData > 0 && isUsingDB()) {
-            String deleteKpiLogQuery = "DELETE FROM " + datasourceProperties.getTableName();
-            deleteKpiLogQuery += " WHERE StartTime < ? ";
 
-            SqlUtils.runQuery(datasourceProperties, deleteKpiLogQuery, new QueryCallback() {
+        if (kpiLogProperties.getCronJobDeleteDataEnabled()) {
+            final Integer timeSaveData = kpiLogProperties.getTimeSaveData();
+            if (timeSaveData != null && timeSaveData > 0 && isUsingDB()) {
+                String deleteKpiLogQuery = "DELETE FROM " + datasourceProperties.getTableName();
+                deleteKpiLogQuery += " WHERE StartTime < ? ";
 
-                @Override
-                public void bindParameters(PreparedStatement statement) throws SQLException {
-                    statement.setTimestamp(1, new Timestamp(new Date().getTime() - (timeSaveData * 24 * 60 * 60 * 1000)));
-                }
-            });
+                SqlUtils.runQuery(datasourceProperties, deleteKpiLogQuery, new QueryCallback() {
+
+                    @Override
+                    public void bindParameters(PreparedStatement statement) throws SQLException {
+                        statement.setTimestamp(1, new Timestamp(new Date().getTime() - (timeSaveData * 24 * 60 * 60 * 1000)));
+                    }
+                });
+            }
         }
     }
 

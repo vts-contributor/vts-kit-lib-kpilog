@@ -12,6 +12,9 @@ import org.springframework.context.annotation.Configuration;
 @Data
 public class KpiLogProperties {
 
+    @Value("${logs.kpi-logs.cron-job-delete-data-enabled:false}")
+    private Boolean cronJobDeleteDataEnabled;
+
     @Value("${logs.kpi-logs.time-save-data:}")
     private Integer timeSaveData;
 
